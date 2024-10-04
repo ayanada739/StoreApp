@@ -1,8 +1,13 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Store.G04.Core;
+using Store.G04.Core.Mapping.Products;
+using Store.G04.Core.Sevices.Contract;
+using Store.G04.Repository;
 using Store.G04.Repository.Data;
 using Store.G04.Repository.Data.Contexts;
+using Store.G04.Service.Services.Products;
 
 namespace StoreG04APIs
 {
@@ -25,6 +30,12 @@ namespace StoreG04APIs
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString(name: "DefaultConnection"));
             });
+
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddAutoMapper(M=>M.AddProfile(new ProductProfile()));
+
 
 
 
