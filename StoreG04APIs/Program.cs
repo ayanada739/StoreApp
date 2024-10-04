@@ -7,7 +7,9 @@ namespace StoreG04APIs
 {
     public class Program
     {
-        public static void Main(string[] args)
+
+        // Entry Point
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,27 @@ namespace StoreG04APIs
 
 
             var app = builder.Build();
+
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<StoreDbContext>();
+            var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
+            try
+            {
+                await context.Database.MigrateAsync();
+
+            }
+            catch(Exception ex)
+            {
+                var Logger = LoggerFactory.CreateLogger<Program>();
+
+                Logger.LogError(ex, message: "There are problem during applying migration !");
+            }
+
+
+
+
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
