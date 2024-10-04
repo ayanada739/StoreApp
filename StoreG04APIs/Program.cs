@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Store.G04.Repository.Data;
 using Store.G04.Repository.Data.Contexts;
 
 namespace StoreG04APIs
@@ -30,6 +31,8 @@ namespace StoreG04APIs
 
             var app = builder.Build();
 
+
+
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
             var context = services.GetRequiredService<StoreDbContext>();
@@ -37,6 +40,7 @@ namespace StoreG04APIs
             try
             {
                 await context.Database.MigrateAsync();
+                await StoreDbContextSeed.SeedAsync(context);
 
             }
             catch(Exception ex)
