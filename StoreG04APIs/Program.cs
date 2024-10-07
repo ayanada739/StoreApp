@@ -1,13 +1,21 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Store.G04.Core;
+using Store.G04.Core.Mapping.Products;
+using Store.G04.Core.Sevices.Contract;
+using Store.G04.Repository;
+using Store.G04.Repository.Data;
 using Store.G04.Repository.Data.Contexts;
+using Store.G04.Service.Services.Products;
 
 namespace StoreG04APIs
 {
     public class Program
     {
-        public static void Main(string[] args)
+
+        // Entry Point
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -23,10 +31,40 @@ namespace StoreG04APIs
                 option.UseSqlServer(builder.Configuration.GetConnectionString(name: "DefaultConnection"));
             });
 
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+             builder.Services.AddAutoMapper(M => M.AddProfile(new ProductProfile(builder.Configuration)));
+
+
 
 
 
             var app = builder.Build();
+
+
+
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<StoreDbContext>();
+            var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
+            try
+            {
+                await context.Database.MigrateAsync();
+                await StoreDbContextSeed.SeedAsync(context);
+
+            }
+            catch(Exception ex)
+            {
+                var Logger = LoggerFactory.CreateLogger<Program>();
+
+                Logger.LogError(ex, message: "There are problem during applying migration !");
+            }
+
+
+
+
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -34,6 +72,8 @@ namespace StoreG04APIs
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 
