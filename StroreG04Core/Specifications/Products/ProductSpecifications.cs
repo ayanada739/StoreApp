@@ -14,11 +14,13 @@ namespace Store.G04.Core.Specifications.Products
             ApplyIncludes();
 
         }
-        
+
 
         public ProductSpecifications(ProductSpecParams productSpec) : base
             (
-               P => 
+               P =>
+               (string.IsNullOrEmpty(productSpec.Search) || P.Name.ToLower().Contains(productSpec.Search))
+               &&
                (!productSpec.BrandId.HasValue || productSpec.BrandId == P.BrandId)
                &&
                (!productSpec.TypeId.HasValue || productSpec.TypeId == P.TypeId)
