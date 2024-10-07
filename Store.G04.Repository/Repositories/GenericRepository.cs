@@ -31,7 +31,9 @@ namespace Store.G04.Repository.Repositories
         {
             if (typeof(TEntity) == typeof(Product))
             {
-                return   await _context.Products.Include(P => P.Brand).Include(P => P.Type).FirstOrDefaultAsync(P => P.Id == id as int?) as TEntity;
+                //return   await _context.Products.Include(P => P.Brand).Include(P => P.Type).FirstOrDefaultAsync(P => P.Id == id as int?) as TEntity;
+                return await _context.Products.Where(P => P.Id == id as int?).Include(P => P.Brand).Include(P => P.Type).FirstOrDefaultAsync() as TEntity;
+
             }
             return await _context.Set<TEntity>().FindAsync();
 
