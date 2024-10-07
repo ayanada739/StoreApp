@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Store.G04.Core.Dtos.Products;
+using Store.G04.Core.Helper;
 using Store.G04.Core.Sevices.Contract;
+using Store.G04.Core.Specifications.Products;
 
 namespace Store.G04.APIs.Controllers
 {
@@ -18,9 +21,9 @@ namespace Store.G04.APIs.Controllers
         [HttpGet] //Get BaseUrl /api/Products
 
         //sort : name, priceAsc, priceDesc
-        public async Task<IActionResult> GetAllProducts([FromQuery] string? sort, [FromQuery] int? brandId, [FromQuery] int? typeId, [FromQuery] int? pageSize = 5 , [FromQuery] int? pageIndex =1 )//Endpoint
+        public async Task<IActionResult> GetAllProducts([FromQuery]ProductSpecParams productSpec  )//Endpoint
         {
-            var result = await _productService.GetAllProductsAsync(sort, brandId, typeId, pageSize, pageIndex);
+            var result = await _productService.GetAllProductsAsync(productSpec);
             return Ok(result); //200
         }
 
