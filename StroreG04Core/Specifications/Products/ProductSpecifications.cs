@@ -15,7 +15,14 @@ namespace Store.G04.Core.Specifications.Products
 
         }
 
-        public ProductSpecifications(string? sort)
+        public ProductSpecifications(string? sort, int? brandId, int? typeId) : base
+            (
+               P => 
+               (!brandId.HasValue || brandId == P.BrandId)
+               &&
+               (!typeId.HasValue || typeId == P.TypeId)
+            
+            )
         {
 
             //name, priceAsc, priceDwsc
