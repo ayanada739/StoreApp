@@ -38,7 +38,7 @@ namespace Store.G04.Repository
         //P => P.Brand
         //P => P.Type
 
-        // _context.Products.Where(P => P.Id == id as int?).Include(P => P.Brand).Include(P => P.Type).FirstOrDefaultAsync() as TEntity;
+        // _context.Products.Where(P => P.Id == id as int?).Include(P => P.Brand).Include(P => P.Type);
 
     }
 }

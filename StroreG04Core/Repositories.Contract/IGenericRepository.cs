@@ -1,4 +1,5 @@
 ﻿using Store.G04.Core.Entities;
+using Store.G04.Core.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -12,6 +13,8 @@ namespace Store.G04.Core.Repositories.Contract
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity> GetAsync(TKey id);
+        Task<IEnumerable<TEntity>> GetAllWithSpecAsync(ISpecifications<TEntity, TKey> spec);
+        Task<TEntity> GetWithSpecAsync(ISpecifications<TEntity, TKey> id);
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);
