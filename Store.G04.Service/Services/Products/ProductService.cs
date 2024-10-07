@@ -24,9 +24,9 @@ namespace Store.G04.Service.Services.Products
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(string? sort, int? brandId, int? typeId)
+        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(string? sort, int? brandId, int? typeId, int? pageSize, int? pageIndex)
         {
-            var spec = new ProductSpecifications(sort, brandId, typeId) ;
+            var spec = new ProductSpecifications(sort, brandId, typeId, pageSize.Value, pageIndex.Value) ;
             return _mapper.Map<IEnumerable<ProductDto>>(await _unitOfWork.Repository<Product, int>().GetAllWithSpecAsync(spec));
 
         }

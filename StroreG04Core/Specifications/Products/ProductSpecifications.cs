@@ -14,8 +14,9 @@ namespace Store.G04.Core.Specifications.Products
             ApplyIncludes();
 
         }
+        
 
-        public ProductSpecifications(string? sort, int? brandId, int? typeId) : base
+        public ProductSpecifications(string? sort, int? brandId, int? typeId, int pageSize, int pageIndex) : base
             (
                P => 
                (!brandId.HasValue || brandId == P.BrandId)
@@ -47,6 +48,8 @@ namespace Store.G04.Core.Specifications.Products
                 AddOrderBy(P => P.Name);
             }
             ApplyIncludes();
+
+            ApplyPagination(pageSize * (pageIndex - 1), pageSize) ;  
         }
 
         private void ApplyIncludes()

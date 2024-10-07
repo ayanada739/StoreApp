@@ -18,9 +18,9 @@ namespace Store.G04.APIs.Controllers
         [HttpGet] //Get BaseUrl /api/Products
 
         //sort : name, priceAsc, priceDesc
-        public async Task<IActionResult> GetAllProducts([FromQuery] string? sort, [FromQuery] int? brandId, [FromQuery] int? typeId )//Endpoint
+        public async Task<IActionResult> GetAllProducts([FromQuery] string? sort, [FromQuery] int? brandId, [FromQuery] int? typeId, [FromQuery] int? pageSize = 5 , [FromQuery] int? pageIndex =1 )//Endpoint
         {
-            var result = await _productService.GetAllProductsAsync(sort, brandId, typeId);
+            var result = await _productService.GetAllProductsAsync(sort, brandId, typeId, pageSize, pageIndex);
             return Ok(result); //200
         }
 

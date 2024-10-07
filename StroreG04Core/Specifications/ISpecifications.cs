@@ -15,6 +15,9 @@ namespace Store.G04.Core.Specifications
 
         public Expression<Func<TEntity, object>> OrderBy { get; set; }
         public Expression<Func<TEntity, object>> OrderByDescendeing { get; set; }
+        public int Skip { get; set; }
+        public int Take { get; set; }
+        public bool IsPaginationEnabled { get; set; }
 
     }
     // _context.Products.Where(P => P.Id == id as int?).Include(P => P.Brand).Include(P => P.Type).FirstOrDefaultAsync() as TEntity;

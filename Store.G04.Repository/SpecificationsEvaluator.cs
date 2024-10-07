@@ -32,6 +32,11 @@ namespace Store.G04.Repository
                 query = query.OrderByDescending(spec.OrderByDescendeing);
             }
 
+            if(spec.IsPaginationEnabled)
+            {
+                query = query.Skip(spec.Skip).Take(spec.Take);
+            }
+
             //P => P.Brand
             //P => P.Type
             // _context.Products.Include(P => P.Brand)
