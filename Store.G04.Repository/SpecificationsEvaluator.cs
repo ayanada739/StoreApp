@@ -22,6 +22,16 @@ namespace Store.G04.Repository
                 query = query.Where(spec.Criteria);
             }
 
+            if(spec.OrderBy is not null)
+            {
+                query = query.OrderBy(spec.OrderBy);
+            }
+
+            if(spec.OrderByDescendeing is not null)
+            {
+                query = query.OrderByDescending(spec.OrderByDescendeing);
+            }
+
             //P => P.Brand
             //P => P.Type
             // _context.Products.Include(P => P.Brand)

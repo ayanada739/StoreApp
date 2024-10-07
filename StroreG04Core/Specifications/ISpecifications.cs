@@ -13,6 +13,9 @@ namespace Store.G04.Core.Specifications
         public Expression<Func<TEntity, bool>> Criteria { get; set; }
         public List<Expression<Func<TEntity, object>>> Includes { get; set; }
 
+        public Expression<Func<TEntity, object>> OrderBy { get; set; }
+        public Expression<Func<TEntity, object>> OrderByDescendeing { get; set; }
+
     }
     // _context.Products.Where(P => P.Id == id as int?).Include(P => P.Brand).Include(P => P.Type).FirstOrDefaultAsync() as TEntity;
 

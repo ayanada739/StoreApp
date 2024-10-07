@@ -12,10 +12,33 @@ namespace Store.G04.Core.Specifications.Products
         public ProductSpecifications(int id) : base(P => P.Id == id)
         {
             ApplyIncludes();
+
         }
 
-        public ProductSpecifications()
+        public ProductSpecifications(string? sort)
         {
+
+            //name, priceAsc, priceDwsc
+            if(!string.IsNullOrEmpty(sort))
+            {
+                switch(sort)
+                {                   
+                    case "priceAsc":
+                        AddOrderBy( P => P.Price);
+                        break;
+                    case "priceDesc":
+                        AddOrderByDescending( P => P.Price);
+                        break;                   
+                    default:
+                        AddOrderBy( P => P.Name);
+                        break;
+                         
+                }
+            }
+            else
+            {
+                AddOrderBy(P => P.Name);
+            }
             ApplyIncludes();
         }
 

@@ -12,6 +12,8 @@ namespace Store.G04.Core.Specifications
     {
         public Expression<Func<TEntity, bool>> Criteria { get; set; } = null;
         public List<Expression<Func<TEntity, object>>> Includes { get; set; } = new List<Expression<Func<TEntity, object>>>();
+        public Expression<Func<TEntity, object>> OrderBy { get ; set ; }
+        public Expression<Func<TEntity, object>> OrderByDescendeing { get ; set ; }
 
         public BaseSpecifications(Expression<Func<TEntity, bool>> expression)
         {
@@ -22,6 +24,15 @@ namespace Store.G04.Core.Specifications
         {
             
         }
-      
+
+        public void AddOrderBy(Expression<Func<TEntity, object>> expression)
+        {
+            OrderBy = expression;
+        }
+
+        public void AddOrderByDescending(Expression<Func<TEntity, object>> expression)
+        {
+            OrderByDescendeing = expression;
+        }
     }
 }
