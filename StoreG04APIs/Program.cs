@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Store.G04.APIs.Errors;
+using Store.G04.APIs.MiddleWares;
 using Store.G04.Core;
 using Store.G04.Core.Mapping.Products;
 using Store.G04.Core.Sevices.Contract;
@@ -83,7 +84,7 @@ namespace StoreG04APIs
             }
 
 
-
+            app.UseMiddleware<ExceptionMiddleWare>(); //Configure Users-Defined [ExceptionMiddleWare]   MiddleWare
 
 
 
