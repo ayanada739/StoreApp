@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.G04.APIs.Errors;
 using Store.G04.Repository.Data.Contexts;
 
 namespace Store.G04.APIs.Controllers
@@ -20,7 +21,7 @@ namespace Store.G04.APIs.Controllers
         {
             var brand = await _context.Brands.FindAsync(100);
 
-            if (brand is null) return NotFound();
+            if (brand is null) return NotFound(value: new ApiErrorResponse(statusCode:404));
             return Ok(brand);
         }
 
@@ -38,7 +39,7 @@ namespace Store.G04.APIs.Controllers
         [HttpGet("badrequest")] // Get:  /api/Buggy/badrequest
         public async Task<IActionResult> GetBadRequestError()
         {
-            return BadRequest();
+            return BadRequest(error: new ApiErrorResponse(statusCode: 400));
         }
 
         [HttpGet("badrequest{id}")] // Get:  /api/Buggy/badrequest
@@ -51,7 +52,7 @@ namespace Store.G04.APIs.Controllers
         [HttpGet("unauthorized")] // Get:  /api/Buggy/unauthorized
         public async Task<IActionResult> GetUnauthorizedError(int id) //Validation Error
         {
-            return Unauthorized();
+            return Unauthorized(value: new ApiErrorResponse(statusCode: 401));
         }
     }
 }
