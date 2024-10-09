@@ -45,6 +45,8 @@ namespace Store.G04.APIs.Controllers
         [HttpGet("badrequest{id}")] // Get:  /api/Buggy/badrequest
         public async Task<IActionResult> GetBadRequestError( int id) //Validation Error
         {
+            
+
             return Ok();
         }
 
