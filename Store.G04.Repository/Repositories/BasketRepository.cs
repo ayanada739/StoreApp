@@ -24,16 +24,16 @@ namespace Store.G04.Repository.Repositories
            return await _database.KeyDeleteAsync(basketId);
         }
 
-        public async Task<CustumerBasket?> GetBasketAsync(string basketId)
+        public async Task<CustomerBasket?> GetBasketAsync(string basketId)
         {
             var basket = await _database.StringGetAsync(basketId);
 
-            return basket.IsNullOrEmpty ? null: JsonSerializer.Deserialize<CustumerBasket>(basket);
+            return basket.IsNullOrEmpty ? null: JsonSerializer.Deserialize<CustomerBasket>(basket);
         }
 
-        public async Task<CustumerBasket?> UpdateBasketAsync(CustumerBasket basket)
+        public async Task<CustomerBasket?> UpdateBasketAsync(CustomerBasket basket)
         {
-           var CreatedOrUpdatedBasket = await _database.StringSetAsync(basket.Id, JsonSerializer.Serialize<CustumerBasket>(basket), TimeSpan.FromDays(30));
+           var CreatedOrUpdatedBasket = await _database.StringSetAsync(basket.Id, JsonSerializer.Serialize<CustomerBasket>(basket), TimeSpan.FromDays(30));
 
             if (CreatedOrUpdatedBasket is false) return null;
             return await GetBasketAsync(basket.Id);

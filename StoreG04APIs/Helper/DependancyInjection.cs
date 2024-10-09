@@ -9,6 +9,10 @@ using Store.G04.Core.Mapping.Products;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
 using Store.G04.APIs.Errors;
+using Store.G04.Core.Repositories.Contract;
+using Store.G04.Repository.Repositories;
+using StackExchange.Redis;
+using Store.G04.Core.Mapping.Basket;
 
 namespace Store.G04.APIs.Helper
 {
@@ -23,6 +27,7 @@ namespace Store.G04.APIs.Helper
             services.AddUserDefinedService();
             services.AddAutoMapperService(configuration);
             services.ConfigureInvalidModelStatusResponseService();
+            services.AddRedisService(configuration);
 
 
 
@@ -61,6 +66,8 @@ namespace Store.G04.APIs.Helper
         {
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IBasketRepository, BasketRepository>();
+
 
 
             return services;
@@ -69,7 +76,7 @@ namespace Store.G04.APIs.Helper
         private static IServiceCollection AddAutoMapperService(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddAutoMapper(M => M.AddProfile(new ProductProfile(configuration)));
-
+            services.AddAutoMapper(M => M.AddProfile(new BasketProfile()));
 
             return services;
         }
@@ -100,6 +107,17 @@ namespace Store.G04.APIs.Helper
             return services;
         }
 
+        private static IServiceCollection AddRedisService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
+            {
+               var connection = configuration.GetConnectionString("Redis");
+
+                return ConnectionMultiplexer.Connect(connection);
+            });
+            
+            return services;
+        }
 
 
     }

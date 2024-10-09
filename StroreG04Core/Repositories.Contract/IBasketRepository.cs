@@ -9,8 +9,8 @@ namespace Store.G04.Core.Repositories.Contract
 {
     public interface IBasketRepository
     {
-        Task<CustumerBasket?> GetBasketAsync(string basketId);
-        Task<CustumerBasket?> UpdateBasketAsync(CustumerBasket basket);
+        Task<CustomerBasket?> GetBasketAsync(string basketId);
+        Task<CustomerBasket?> UpdateBasketAsync(CustomerBasket basket);
 
         Task<bool> DeleteBasketAsync(string basketId);
 
