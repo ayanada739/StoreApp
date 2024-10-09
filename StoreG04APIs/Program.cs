@@ -95,6 +95,9 @@ namespace StoreG04APIs
                 app.UseSwaggerUI();
             }
 
+
+            app.UseStatusCodePagesWithReExecute(pathFormat: "/error/{0}");
+
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
