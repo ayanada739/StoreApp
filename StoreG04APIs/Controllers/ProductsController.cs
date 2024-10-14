@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Store.G04.APIs.Attributes;
@@ -23,6 +24,7 @@ namespace Store.G04.APIs.Controllers
         [ProducesResponseType(typeof(PaginationResponse<ProductDto>), StatusCodes.Status200OK)]
         [HttpGet] //Get BaseUrl /api/Products
         [Cached(expireTime:100)]
+        [Authorize]
         //sort : name, priceAsc, priceDesc
         public async Task<ActionResult<PaginationResponse<ProductDto>>> GetAllProducts([FromQuery]ProductSpecParams productSpec  )//Endpoint
         {
@@ -33,6 +35,7 @@ namespace Store.G04.APIs.Controllers
 
         [ProducesResponseType(typeof(IEnumerable<TypeBrandDto>), StatusCodes.Status200OK)]
         [HttpGet("types")] //Get BaseUrl/ api/Products
+        [Authorize]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GeyAllTypes()
         {
             var result = await _productService.GetAllTypesAsync();
@@ -43,6 +46,7 @@ namespace Store.G04.APIs.Controllers
 
         [ProducesResponseType(typeof(IEnumerable<TypeBrandDto>), StatusCodes.Status200OK)]
         [HttpGet("brands")] //Get BaseUrl/ api/Products
+        [Authorize]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllBrands()
         {
             var result = await _productService.GetAllBrandsAsync();

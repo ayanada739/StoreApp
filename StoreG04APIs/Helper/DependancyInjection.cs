@@ -19,6 +19,9 @@ using Store.G04.Core.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Store.G04.Service.Services.Tokens;
 using Store.G04.Service.Services.Users;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Store.G04.APIs.Helper
 {
@@ -35,6 +38,7 @@ namespace Store.G04.APIs.Helper
             services.ConfigureInvalidModelStatusResponseService();
             services.AddRedisService(configuration);
             services.AddIdentityService();
+            services.AddAuthenticationService(configuration);
 
 
 
@@ -138,6 +142,30 @@ namespace Store.G04.APIs.Helper
         {
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<StoreIdentityDbContext>();
+
+
+            return services;
+        }
+
+        private static IServiceCollection AddAuthenticationService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(Options =>
+            {
+                Options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = configuration[key: "Jwt: Issuer"],
+                    ValidateAudience = true,
+                    ValidAudience = configuration[key: "Jwt: Auduience"],
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration[key: "Jwt:Key"]))
+                };
+            });
 
 
             return services;
