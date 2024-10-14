@@ -14,6 +14,9 @@ using Store.G04.Repository.Repositories;
 using StackExchange.Redis;
 using Store.G04.Core.Mapping.Basket;
 using Store.G04.Service.Services.Caches;
+using Store.G04.Repository.Identity.Contexts;
+using Store.G04.Core.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Store.G04.APIs.Helper
 {
@@ -29,6 +32,7 @@ namespace Store.G04.APIs.Helper
             services.AddAutoMapperService(configuration);
             services.ConfigureInvalidModelStatusResponseService();
             services.AddRedisService(configuration);
+            services.AddIdentityService();
 
 
 
@@ -58,6 +62,11 @@ namespace Store.G04.APIs.Helper
             services.AddDbContext<StoreDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString(name: "DefaultConnection"));
+            });
+
+            services.AddDbContext<StoreIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString(name: "IdentityConnection"));
             });
 
             return services;
@@ -121,6 +130,14 @@ namespace Store.G04.APIs.Helper
             return services;
         }
 
+        private static IServiceCollection AddIdentityService(this IServiceCollection services)
+        {
+            services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<StoreIdentityDbContext>();
+
+
+            return services;
+        }
 
     }
 }
