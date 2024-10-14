@@ -25,6 +25,8 @@ namespace StoreG04APIs
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
+
             // Add services to the container.
 
             builder.Services.AddDependancy(builder.Configuration);

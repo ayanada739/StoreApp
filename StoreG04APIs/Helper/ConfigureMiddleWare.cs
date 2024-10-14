@@ -4,6 +4,10 @@ using Store.G04.Repository.Data;
 using StoreG04APIs;
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
+using Store.G04.Repository.Identity.Contexts;
+using Store.G04.Repository.Identity.DataSeed;
+using Microsoft.AspNetCore.Identity;
+using Store.G04.Core.Entities.Identity;
 
 namespace Store.G04.APIs.Helper
 {
@@ -17,12 +21,15 @@ namespace Store.G04.APIs.Helper
             var services = scope.ServiceProvider;
 
             var context = services.GetRequiredService<StoreDbContext>(); //Ask CLR Create Obj StoredDbContext
+            var identityContext = services.GetRequiredService<StoreIdentityDbContext>(); //Ask CLR Create Obj StoreIdentityDbContext
+            var userManager = services.GetRequiredService<UserManager<AppUser>>(); //Ask CLR Create Obj StoreIdentityDbContext
             var LoggerFactory = services.GetRequiredService<ILoggerFactory>();
             try
             {
                 await context.Database.MigrateAsync(); //Update-Database
                 await StoreDbContextSeed.SeedAsync(context);
-
+                await identityContext.Database.MigrateAsync();
+                await StoreIdentityDbContextSeed.SeedAppUserAsync(userManager);
             }
             catch (Exception ex)
             {
@@ -50,6 +57,7 @@ namespace Store.G04.APIs.Helper
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
