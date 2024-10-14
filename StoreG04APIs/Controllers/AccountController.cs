@@ -86,5 +86,23 @@ namespace Store.G04.APIs.Controllers
         }
 
 
+        [Authorize]
+        [HttpPut("UpdateAddress")] // PUT: /api/Account/UpdateAddress
+        public async Task<ActionResult> UpdateCurrentUserAddress([FromBody] UpdateAddressDto addressDto)
+        {
+             var user = await _userManager.FindByEmailAsync(User.Identity.Name);
+            if (user == null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "User not found"));
+       
+            user.Address = _mapper.Map<Address>(addressDto);
+
+             var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+                return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Failed to update address"));
+
+            return Ok("Address updated successfully");
+        }
+
+ 
     }
 }
