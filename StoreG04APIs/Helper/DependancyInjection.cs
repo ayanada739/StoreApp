@@ -13,6 +13,7 @@ using Store.G04.Core.Repositories.Contract;
 using Store.G04.Repository.Repositories;
 using StackExchange.Redis;
 using Store.G04.Core.Mapping.Basket;
+using Store.G04.Service.Services.Caches;
 
 namespace Store.G04.APIs.Helper
 {
@@ -66,6 +67,7 @@ namespace Store.G04.APIs.Helper
         {
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICacheService, CacheService>();
             services.AddScoped<IBasketRepository, BasketRepository>();
 
 

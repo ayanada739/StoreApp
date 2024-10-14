@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Store.G04.APIs.Attributes;
 using Store.G04.APIs.Errors;
 using Store.G04.Core.Dtos.Products;
 using Store.G04.Core.Helper;
@@ -8,7 +9,7 @@ using Store.G04.Core.Sevices.Contract;
 using Store.G04.Core.Specifications.Products;
 
 namespace Store.G04.APIs.Controllers
-{
+{  
     
     public class ProductsController : BaseApiController
     {
@@ -21,7 +22,7 @@ namespace Store.G04.APIs.Controllers
 
         [ProducesResponseType(typeof(PaginationResponse<ProductDto>), StatusCodes.Status200OK)]
         [HttpGet] //Get BaseUrl /api/Products
-
+        [Cached(expireTime:100)]
         //sort : name, priceAsc, priceDesc
         public async Task<ActionResult<PaginationResponse<ProductDto>>> GetAllProducts([FromQuery]ProductSpecParams productSpec  )//Endpoint
         {
